@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .user-input {
+            display: flex;
+            justify-content: space-between;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #d1e7dd;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #f8d7da;
+            text-align: left;
+        }
+        .history-toggle {
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .history-toggle {
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .delete-history {
+            text-align: center;
+            margin-top: 5px;
+            color: red;
+            cursor: pointer;
+        }
+        .delete-button {
+            margin-left: 5px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Bout INDIAN CONSTITUTION</h1>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <div id="conversation-history">
+                {% for item in conversation_history %}
+                    <div class="message user-message">You: {{ item.question }}</div>
+                    <div class="message bot-message">Bot: {{ item.answer }}</div>
+                    <span class="delete-button" onclick="deleteConversation({{ loop.index0 }})">Delete</span>
+                {% endfor %}
+            </div>
+            {% if response %}
+                <div class="message user-message">You: {{ user_query }}</div> 
+                <div class="message bot-message">{{ response }}</div>
+            {% endif %}
+        </div>
+        <form method="POST" enctype="multipart/form-data" class="user-input">
+            <input type="text" name="user_query" placeholder="Your Question..." required>
+            <input type="submit" value="Send">
+        </form>
+        <div class="history-toggle" onclick="toggleHistory()">
+            <span id="history-text">Show History</span>
+        </div>
+        <div class="delete-history" onclick="deleteHistory()">
+            Delete All History
+        </div>
+    </div>
+
+    <script>
+        function toggleHistory() {
+            const historyDiv = document.getElementById('conversation-history');
+            const historyText = document.getElementById('history-text');
+
+            if (historyDiv.style.display === 'none') {
+                historyDiv.style.display = 'block';
+                historyText.textContent = 'Hide History';
+            } else {
+                historyDiv.style.display = 'none';
+                historyText.textContent = 'Show History';
+            }
+        }
+
+        function deleteConversation(index) {
+            // Send an AJAX request to the server to delete the specific conversation
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/delete_conversation', true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Reload the page to update the UI
+                    location.reload();
+                } else {
+                    alert('Failed to delete conversation.');
+                }
+            };
+            xhr.send(JSON.stringify({ 'index': index })); 
+        }
+
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>
+
+
+
