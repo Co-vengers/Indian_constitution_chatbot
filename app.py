@@ -16,7 +16,7 @@ genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # Define the path to your permanent CSV file (replace with your actual path)
-BOOK_PATH = "/Users/vyomrohila/Documents/coding/Flask/indian_contituition_chatbot/chatbot_prac/indian_constitution copy.csv"
+BOOK_PATH = "/Users/vyomrohila/Documents/coding/Flask/Indian_constitution_chatbot/indian_constitution copy.csv"
 
 app = Flask(__name__)
 
