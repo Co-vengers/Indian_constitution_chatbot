@@ -17,7 +17,7 @@ This project is a Flask-based web application that allows users to interact with
 ### Installation
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone git@github.com:Co-vengers/Indian_constitution_chatbot.git
    cd Indian_constitution_chatbot
    ```
 2. **Install dependencies:**
