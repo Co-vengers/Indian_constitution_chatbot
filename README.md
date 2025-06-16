@@ -50,4 +50,5 @@ The app will be available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 4. Optionally, delete any conversation entry.
 
 ## License
-This project is for educational purposes only.
+
+_No license. This project is not licensed for public or commercial use._
