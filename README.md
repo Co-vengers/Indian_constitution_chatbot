@@ -51,4 +51,4 @@ The app will be available at [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
 ## License
 
-_This project is licensed under the MIT License - see the LICENSE file for details._
+_No license. This project is not licensed for public or commercial use._

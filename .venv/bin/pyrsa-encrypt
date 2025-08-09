@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/home/vyom-rohila/Flask/chatbot prac/.venv/bin/python3" "$0" "$@"
-' '''
+#!/Users/vyomrohila/Documents/coding/Flask/Indian_constitution_chatbot/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

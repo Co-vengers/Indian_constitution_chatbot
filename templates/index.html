@@ -30,6 +30,7 @@
             background-color: #f5f7fb;
             color: var(--dark-color);
             line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll on animation */
         }
 
         .container {
@@ -41,6 +42,7 @@
         header {
             text-align: center;
             margin-bottom: 30px;
+            animation: slideInUp 0.8s ease-out;
         }
 
         h1 {
@@ -67,6 +69,8 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
+            animation: slideInUp 0.8s ease-out 0.2s;
+            animation-fill-mode: backwards; /* Start animation from off-screen */
         }
 
         .chat-header {
@@ -75,6 +79,7 @@
             padding: 15px 20px;
             display: flex;
             align-items: center;
+            border-bottom: 1px solid transparent;
         }
 
         .chat-header i {
@@ -97,12 +102,7 @@
             padding: 12px 16px;
             border-radius: var(--border-radius);
             position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 0; /* Start hidden for animation */
         }
 
         .user-message {
@@ -110,6 +110,7 @@
             background-color: var(--primary-color);
             color: white;
             border-bottom-right-radius: 5px;
+            animation: slideInRight 0.5s forwards ease-out;
         }
 
         .bot-message {
@@ -119,6 +120,7 @@
             border: 1px solid #e9ecef;
             border-bottom-left-radius: 5px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: slideInLeft 0.5s forwards ease-out;
         }
 
         .message-time {
@@ -129,13 +131,8 @@
             text-align: right;
         }
 
-        .bot-message .message-time {
-            color: #6c757d;
-        }
-
-        .user-message .message-time {
-            color: rgba(255, 255, 255, 0.7);
-        }
+        .bot-message .message-time { color: #6c757d; }
+        .user-message .message-time { color: rgba(255, 255, 255, 0.7); }
 
         .input-area {
             display: flex;
@@ -178,9 +175,9 @@
             background-color: var(--secondary-color);
             transform: translateY(-2px);
         }
-
-        .send-button i {
-            font-size: 1.2rem;
+        
+        .send-button:active {
+            transform: translateY(0px) scale(0.95);
         }
 
         .history-controls {
@@ -202,21 +199,10 @@
             transition: var(--transition);
         }
 
-        .history-btn i {
-            margin-right: 5px;
-        }
-
-        .history-btn:hover {
-            color: var(--secondary-color);
-        }
-
-        .delete-btn {
-            color: var(--warning-color);
-        }
-
-        .delete-btn:hover {
-            color: #d0006f;
-        }
+        .history-btn i { margin-right: 5px; }
+        .history-btn:hover { color: var(--secondary-color); }
+        .delete-btn { color: var(--warning-color); }
+        .delete-btn:hover { color: #d0006f; }
 
         .typing-indicator {
             display: flex;
@@ -238,16 +224,24 @@
             animation: typingAnimation 1.4s infinite ease-in-out;
         }
 
-        .typing-dot:nth-child(1) {
-            animation-delay: 0s;
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* --- NEW ANIMATIONS --- */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         @keyframes typingAnimation {
@@ -255,41 +249,18 @@
             30% { transform: translateY(-5px); }
         }
 
-        /* Scrollbar styling */
-        .chat-box::-webkit-scrollbar {
-            width: 8px;
-        }
+        /* --- SCROLLBAR STYLING --- */
+        .chat-box::-webkit-scrollbar { width: 8px; }
+        .chat-box::-webkit-scrollbar-track { background: #f1f1f1; }
+        .chat-box::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        .chat-box::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
 
-        .chat-box::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .chat-box::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
-        .chat-box::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* Responsive adjustments */
+        /* --- RESPONSIVE ADJUSTMENTS --- */
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .chat-container {
-                height: 85vh;
-            }
-            
-            .message {
-                max-width: 90%;
-            }
+            .container { padding: 10px; }
+            h1 { font-size: 1.8rem; }
+            .chat-container { height: calc(100vh - 20px); }
+            .message { max-width: 90%; }
         }
     </style>
 </head>
@@ -302,148 +273,64 @@
 
         <div class="chat-container">
             <div class="chat-header">
-                <i class="fas fa-robot"></i>
-                <h2>Constitution Assistant</h2>
+                <i class="fas fa-gavel"></i> <h2>Constitution Assistant</h2>
             </div>
 
             <div class="chat-box" id="chat-box">
-                <!-- Conversation history will be loaded here -->
-                <div id="conversation-history">
-                    {% for item in conversation_history %}
-                        <div class="message user-message">
-                            {{ item.question }}
-                            <span class="message-time">{{ item.timestamp }}</span>
-                        </div>
-                        <div class="message bot-message">
-                            {{ item.answer }}
-                            <span class="message-time">{{ item.timestamp }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-                
-                <!-- Current conversation -->
-                {% if response %}
-                    <div class="message user-message">
-                        {{ user_query }}
-                        <span class="message-time">Just now</span>
-                    </div> 
-                    <div class="message bot-message">
-                        {{ response }}
-                        <span class="message-time">Just now</span>
+                {% for item in conversation_history %}
+                    <div class="message user-message" style="animation: none; opacity: 1;"> {{ item.question }}
                     </div>
-                {% endif %}
+                    <div class="message bot-message" style="animation: none; opacity: 1;">
+                        {{ item.answer | safe }}
+                    </div>
+                {% endfor %}
             </div>
 
-            <form method="POST" enctype="multipart/form-data" class="input-area">
-                <input type="text" name="user_query" placeholder="Ask about the Indian Constitution..." required>
+            <div id="typing-indicator-container" class="chat-box" style="padding: 0 20px; flex: 0; display: none;">
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <form method="POST" id="chat-form" class="input-area">
+                <input type="text" id="user-input" name="user_query" placeholder="Ask about the Indian Constitution..." required autocomplete="off">
                 <button type="submit" class="send-button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </form>
-
+            
             <div class="history-controls">
-                <button class="history-btn" onclick="toggleHistory()">
-                    <i class="fas fa-history"></i>
-                    <span id="history-text">Chat History</span>
-                </button>
-                <button class="history-btn delete-btn" onclick="deleteHistory()">
-                    <i class="fas fa-trash-alt"></i>
-                    Clear History
-                </button>
+                <form action="{{ url_for('clear_history') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete all chat history?');">
+                    <button type="submit" class="history-btn delete-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        Clear History
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-        // Auto-scroll to bottom of chat
-        const chatBox = document.getElementById('chat-box');
-        chatBox.scrollTop = chatBox.scrollHeight;
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatBox = document.getElementById('chat-box');
+            const chatForm = document.getElementById('chat-form');
+            const userInput = document.getElementById('user-input');
+            const typingIndicator = document.getElementById('typing-indicator-container');
 
-        function toggleHistory() {
-            const historyDiv = document.getElementById('conversation-history');
-            const historyText = document.getElementById('history-text');
-
-            if (historyDiv.style.display === 'none') {
-                historyDiv.style.display = 'block';
-                historyText.textContent = 'Chat History';
-            } else {
-                historyDiv.style.display = 'none';
-                historyText.textContent = 'Show History';
-            }
-        }
-
-        function deleteHistory() {
-            if (confirm('Are you sure you want to delete all chat history?')) {
-                fetch('/delete_history', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    } else {
-                        alert('Failed to delete history.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting history.');
-                });
-            }
-        }
-
-        function deleteConversation(index) {
-            if (confirm('Delete this conversation?')) {
-                fetch('/delete_conversation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ index: index })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    } else {
-                        alert('Failed to delete conversation.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting conversation.');
-                });
-            }
-        }
-
-        // Add typing indicator when waiting for response
-        function showTypingIndicator() {
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator';
-            typingIndicator.id = 'typing-indicator';
-            typingIndicator.innerHTML = `
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <span style="margin-left: 10px;">Bot is typing...</span>
-            `;
-            chatBox.appendChild(typingIndicator);
+            // Scroll to the bottom of the chat box on page load
             chatBox.scrollTop = chatBox.scrollHeight;
-        }
 
-        // Remove typing indicator when response arrives
-        function hideTypingIndicator() {
-            const indicator = document.getElementById('typing-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        }
-
-        // If this is a new query, show typing indicator
-        {% if user_query and not response %}
-            showTypingIndicator();
-        {% endif %}
+            // Handle form submission
+            chatForm.addEventListener('submit', function() {
+                // Show typing indicator when user sends a message
+                if (userInput.value.trim() !== '') {
+                    typingIndicator.style.display = 'block';
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            });
+        });
     </script>
 </body>
 </html>
