@@ -76,17 +76,20 @@ Follow these steps to get the application running on your local machine.
 
 ***
 
-## 📂 Project File Structure
-   ├── app.py
-   ├── conversation_history.json
-   ├── indian_constitution copy.csv
-   ├── LICENSE
-   ├── README.md
-   ├── requirements.txt
-   ├── .env
-   ├── templates/
-   │   └── index.html
 
-##License
-   This project is licensed for educational purposes only.
+## 📂 Project File Structure
+```text
+├── app.py
+├── conversation_history.json
+├── indian_constitution copy.csv
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── .env
+├── templates/
+│   └── index.html
+```
+
+## License
+This project is licensed for educational purposes only.
 
